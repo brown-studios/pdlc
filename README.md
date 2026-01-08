@@ -1,7 +1,5 @@
 # PDLC driver
 
-**Status: UNDER DEVELOPMENT**
-
 Drives [polymer dispersed liquid crystal (PDLC) film](https://en.wikipedia.org/wiki/Smart_glass#Polymer-dispersed_liquid-crystal_devices) from a 12 V DC nominal power supply.
 
 PDLC film is opaque when turned off and becomes clear when turned on.  For example, you can apply it to a window to replace a privacy curtain or to create a diffuse surface for a projection screen on demand.
@@ -10,29 +8,11 @@ PDLC film is opaque when turned off and becomes clear when turned on.  For examp
 
 Here are some of the features of this PDLC driver board:
 
-- Supports approximately 4 square meters of PDLC film depending on its electrical characteristics
-- Outputs ~60 V AC with up to 18 W of power from a 10 to 16 VDC power supply
-- Can use a switch, relay, optocoupler, or transistor to remotely enable the driver
-- Includes built-in circuit protection for the supply and load
+- Drives approximately 4 square meters of PDLC film depending on its electrical characteristics with 15 W of power at 60 V AC peak-to-peak nominal
+- Designed to run on a 12 V DC battery or power supply at a maximum of 16 V DC
+- Shuts off automatically to protect the battery when the supply voltage falls below 10.6 V DC and resumes operation at 11.5 V
+- Has several forms of circuit protection for the supply and the load
 - Power on indicator
-
-## Design synopsis
-
-The driver has the following major components:
-
-- A [LM5158](https://www.ti.com/lit/ds/symlink/lm5158.pdf) boost converter produces ~60 V DC at 300 mA (actually 61 V DC) with overload, over voltage, and over temperature protection
-- A [LM5108](https://www.ti.com/lit/ds/symlink/lm5108.pdf) half-bridge driver and discrete FETs produce the AC square wave output
-- A [TLC555](http://www.ti.com/lit/ds/symlink/tlc555.pdf) timer and [SN74LVC1G14](https://www.ti.com/lit/ds/symlink/sn74lvc1g14.pdf) inverter generate square waves for commutation at 100 Hz
-- Supply circuit protection with a 2 A polyfuse and transient voltage suppressor
-- Remote enable / shutdown circuit with under voltage lock-out
-
-[View the schematics in PDF format](hardware/pdlc.pdf)
-
-## Circuit board
-
-![Front side of circuit board](hardware/pdlc-front.png)
-
-![Back side of circuit board](hardware/pdlc-back.png)
 
 ## Installation
 
@@ -46,15 +26,13 @@ Connect `OUTA` and `OUTB` to the PDLC film using 22 AWG (0.3 mm^2) wire or large
 
 Connect `EN` to one `GND` terminal via a switch circuit, via a short jumper wire, or by soldering the `ENABLE` jumper closed.  The `EN` terminal is active low so the driver turns on when `EN` is grounded and turn offs otherwise.  Use 24 AWG (0.2 mm^2) wire or larger to make the connection.  Smaller wires will work but may be too fragile for the terminals.
 
-The switch circuit carries less than 1 mA of current at 12 V DC nominal.  You can use many kinds of switching devices to close the circuit from `EN` to `GND` such as a simple SPST rocker switch, a relay, an optocoupler, or a transistor.
-
 If you would like to disable the power on indicator, cut the `JP1` jumper trace.
 
 ## Usage
 
 After [installing the PDLC driver](#installation), provide power to the driver and activate the switch circuit.
 
-If everything is working as intended, the PDLC film will become clear and the power on indicator labeled `ON` will glow red (unless it has been disabled).
+If everything is working as intended and the circuit is enabled, the PDLC film will become clear and the power on indicator labeled `ON` will glow red (unless it has been disabled).
 
 If this does not happen, disconnect power then recheck your connections and the [recommended operational parameters](#recommended-operational-parameters-and-circuit-protection).
 
@@ -65,14 +43,14 @@ Supply:
 - Voltage: 12 V DC nominal and absolute maximum range from 10 to 16 V DC
 - Wiring: minimum 20 AWG (0.5 mm²)
 - Circuit protection
-  - Internal: built-in 2 A polyfuse, transient voltage suppressor, reverse polarity protection, and under voltage lock-out below 9 V
+  - Internal: built-in 2 A polyfuse, transient voltage suppressor, reverse polarity protection, and under voltage lock-out below 10 V
   - External: add a 3 A fuse or circuit breaker to protect the wiring to the device
 
 Load:
 
-- Voltage: ~60 V AC square wave at 100 Hz
+- Voltage: 60 V AC nominal at 100 Hz
 - Current: 300 mA maximum continous load
-- Power output: 18 W maximum continuous load
+- Power output: 15 W maximum continuous load
 - Circuit protection
   - Internal: built-in overload, over voltage, and over temperature protection
   - External: ensure wires are adequately insulated and not exposed to touch
@@ -93,16 +71,6 @@ The film's clarity increases with voltage.  It is opaque at 0 V, begins to clear
 
 The film must be driven with AC to produce an alternating electric field to orient the liquid crystals and it may be damaged when driven in one polarity for too long.  At very low frequencies, the film acts as a shutter.  As the frequency rises to a few hertz, the film will appear to pulse between opaque and clear states.  At higher frequencies, the film appears clear.  Mains AC frequencies (50 / 60 Hz) seem adequate.
 
-### Modifying the drive parameters
-
-**Caution: Modifying the driver's output voltage or frequency may damage the driver or the film!  We recommend testing your changes with a small sample of the material and a current limited bench power supply.**
-
-To change the output frequency, remove the surface mount resistor within the block labeled `FREQ` (if there is one), then solder in a surface mount resistor of a different value or a potentiometer.  Ensure that the `FREQ` resistor value generates a frequency of at least a few hertz to prevent damage to the film.
-
-To change the output voltage, remove the surface mount resistor labeled `FBT`, then solder in a surface mount resistor of a different value.
-
-Refer to the [schematics](hardware/pdlc.pdf) for the formulas, footprints, and default component values.
-
 ### Data
 
 Here's some information about PDLC films that the driver has been tested with.  
@@ -115,7 +83,9 @@ Here's some information about PDLC films that the driver has been tested with.
 
 ## Design history
 
-v1.0: Initial prototype.  Uses a 555 timer and inverter to generate commutation waveforms.  Works well for small PDLC samples.  Can't drive larger panels without modification because it does not wait for the power-good signal to be asserted and the output capacitor to be sufficiently charged before energizing the panel so it hiccups.
+v2.0: Second prototype.  Uses a microcontroller to generate commutation waveforms in software and more careful circuitry to limit the output current.  Should work with larger panels and be safer to operate.  Can be controlled with two switch inputs and interface with a host device as an I2C target.
+
+v1.0: Initial prototype.  Uses a 555 timer and inverter to generate commutation waveforms.  Works fine for small PDLC samples.  Can't drive larger panels without modification because it does not wait for the power-good signal to be asserted before energizing the panel and it does not limit the current so it hiccups.  During testing, the board was modified to replace the timer with a microcontroller to generate PWM signals in open loop control which helped it drive larger panels but it still could not achieve the expected output power.
 
 ## Notice
 
