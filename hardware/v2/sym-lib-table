@@ -1,0 +1,6 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "LM5158")(type "KiCad")(uri "${KIPRJMOD}/library/LM5158/LM5158.kicad_sym")(options "")(descr ""))
+  (lib (name "TBP01R1-508-06BE")(type "KiCad")(uri "${KIPRJMOD}/library/TBP01R1-508-06BE/TBP01R1-508-06BE.kicad_sym")(options "")(descr ""))
+  (lib (name "LMR380xx")(type "KiCad")(uri "${KIPRJMOD}/library/LMR380xx/LMR380xx.kicad_sym")(options "")(descr ""))
+)
