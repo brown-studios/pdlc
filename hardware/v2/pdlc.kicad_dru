@@ -142,3 +142,13 @@
 	(constraint hole_clearance (min 0.15mm))
 	(condition "A.memberOfFootprint('Samtec:SAMTEC_FTSH-107-01-L-DV-K-A')")
 )
+
+(rule "Isolate external I2C interface"
+	(condition "A.hasNetclass('EXT I2C Isolation') && !B.hasNetclass('EXT I2C Isolation')")
+	(constraint clearance (min 1.45mm))
+)
+
+(rule exempt_tooling_hole_courtyard_overlap
+	(constraint courtyard_clearance)
+	(severity ignore)
+	(condition "A.Reference == 'TH*'"))
