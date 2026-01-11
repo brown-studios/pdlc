@@ -14,6 +14,80 @@ Here are some of the features of this PDLC driver board:
 - Has several forms of circuit protection for the supply and the load
 - Power on indicator
 
+## Setup
+
+To begin setting up your PDLC driver, locate these parts of your device:
+
+| Part               | Function |
+| ------------------ | -------- |
+| Terminal block     | Connect power and switches to the terminals as described in the [wiring guide](#wiring). |
+| `POWER` indicator  | Indicates that the device has power.  Can be disabled. |
+| `STATUS` indicator | Indicates the status of the device and provides visual feedback while you configure settings.  Can be disabled. |
+| `MODE` button      | By default, toggles the PDLC panel on/off.  Can be configured to behave in other ways. |
+| `SET` button       | Configures device settings. |
+
+(TODO: ADD ILLUSTRATION)
+
+### Wiring
+
+Remove the terminal block from the device by grasping the sides of the block and gently pulling the block out from its socket.  Do not tug on any wires that you may have already connected to the terminal block because pulling on the wires could damage them.
+
+Identify the screw terminals on the terminal block.  They are numbered from 1 to 6 and these are their functions:
+
+| Terminal | Name       | Function |
+| -------- | ---------- | -------- |
+| 1        | GND        | Power supply input with negative polarity. |
+| 2        | 12V_IN     | Power supply input with positive polarity. |
+| 3        | SW_ENABLE  | Output enable switch input. |
+| 4        | SW_MODE    | Mode switch input. |
+| 5        | PDLC_OUT_A | PDLC panel AC output A. |
+| 6        | PDLC_OUT_B | PDLC panel AC output B. |
+
+(TODO: ADD ILLUSTRATION)
+
+#### Power supply
+
+You must connect the driver to a suitable 12 V DC nominal power supply.  It must be capable of supplying at least 2 amps of current and have suitable overcurrent protection such as a fuse or circuit breaker.
+
+Use 20 AWG (0.5 mm^2) wire or larger to make the connections.
+
+Connect the `GND` terminal to the negative (ground) side of your power supply.
+
+Connect the `12V_IN` terminal to a 3 A fuse or circuit breaker attached to the positive side of your power supply.
+
+
+
+Connect to the negative terminal of your power supply with |
+
+ Internally, this termin in parallel with the `MODE` button.
+
+To set up your device, press and hold the `SET` button for 2 seconds until the `STATUS` indicator lights up
+
+| Option        | Behavior | Setup |
+| ------------- | -------- | ----- |
+| Toggle on/off |
+| Always on     |
+| Ignore        |
+
+When you set up your device, choose one the following ways that you would like 
+
+
+Once you have [installed](#installation) the device, using it is easy: press the `MODE` button to toggle you
+
+RED / GREEN / BLUE menus
+
+`MODE`
+`ENABLE`
+
+press-hold SET button to enter configuration menu
+press MODE to toggle the setting, each setting has a different color, blinks a number of times to indicate value
+press SET to confirm the mode and move to the next setting
+press-hold SET to exit menu
+press-hold SET for very long to perform factory reset
+
+unpopulated red LED reserved for later
+
+
 ## Installation
 
 Wire the 6-pin connector according to the labels shown on the back side of the circuit board as follows.  We recommend using crimped wire ferrules to secure stranded wires before screwing them into the terminal block.
@@ -24,13 +98,19 @@ Connect `12V` and one `GND` terminal to a 10 to 16 V DC supply using 20 AWG (0.5
 
 Connect `OUTA` and `OUTB` to the PDLC film using 22 AWG (0.3 mm^2) wire or larger.  Either terminal can be connected to the PDLC film in either orientation because the film uses AC and there is no distinct polarity.  These wires carry enough voltage to deliver a small electric shock that could be harmful to people so please ensure that the wires are adequately insulated and not exposed to touch.
 
-Connect `EN` to one `GND` terminal via a switch circuit, via a short jumper wire, or by soldering the `ENABLE` jumper closed.  The `EN` terminal is active low so the driver turns on when `EN` is grounded and turn offs otherwise.  Use 24 AWG (0.2 mm^2) wire or larger to make the connection.  Smaller wires will work but may be too fragile for the terminals.
+Connect `EN` to one `GND` terminal via a switch circuit, via a short jumper wire, or by soldering the `ENABLE` jumper closed.  The `EN` terminal is active low so the driver only turns on 
+
+
+turns on when `EN` is grounded and turn offs otherwise.  Use 24 AWG (0.2 mm^2) wire or larger to make the connection.  Smaller wires will work but may be too fragile for the terminals.
 
 If you would like to disable the power on indicator, cut the `JP1` jumper trace.
 
 ## Usage
 
-After [installing the PDLC driver](#installation), provide power to the driver and activate the switch circuit.
+After [installing the PDLC driver](#installation), provide power to the driver.
+
+Press the 
+
 
 If everything is working as intended and the circuit is enabled, the PDLC film will become clear and the power on indicator labeled `ON` will glow red (unless it has been disabled).
 

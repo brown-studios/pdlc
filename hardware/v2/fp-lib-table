@@ -1,8 +1,8 @@
 (fp_lib_table
   (version 7)
-  (lib (name "TBP01R1-508-06BE")(type "KiCad")(uri "${KIPRJMOD}/library/TBP01R1-508-06BE")(options "")(descr ""))
   (lib (name "LM5158")(type "KiCad")(uri "${KIPRJMOD}/library/LM5158/LM5158.pretty")(options "")(descr ""))
   (lib (name "Generic")(type "KiCad")(uri "${KIPRJMOD}/library/Generic/Generic.pretty")(options "")(descr ""))
   (lib (name "1812L")(type "KiCad")(uri "${KIPRJMOD}/library/1812L/1812L.pretty")(options "")(descr ""))
   (lib (name "WE-PD_1050P")(type "KiCad")(uri "${KIPRJMOD}/library/WE-PD_1050P")(options "")(descr ""))
+  (lib (name "Samtec")(type "KiCad")(uri "${KIPRJMOD}/library/Samtec")(options "")(descr ""))
 )

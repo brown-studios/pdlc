@@ -101,9 +101,101 @@ Operating points:
 | max   | 3.10 V |   1.61 V |     3847 |
 | Vdda  | 3.30 V |  -2.79 V |     4095 |
 
+## Pin function map
+
+### Debug
+
+- NRST: RESET
+- BOOT0: BOOT0, boot mode selection
+- BOOT1 on PB2: BOOT0, boot mode selection
+- SWDIO on PA13: SWDIO, serial wire data
+- SWCLK on PA14: SWCLK, serial wire clock
+- SWO/JTDO on PB3: SWO, serial wire trace output
+
+### Console
+
+- USART1_TX on PA9: CONSOLE_TX, serial TX
+- USART1_RX on PA10: CONSOLE_RX, serial RX
+
+### External I2C bus (receives commands as target)
+
+- I2C1_SCL on PB8: EXT_I2C_SCL, serial clock
+- I2C1_SDA on PB9: EXT_I2C_SDA, serial data 
+
+### Internal I2C bus (sends commands as controller)
+
+- I2C2_SCL on PB10: INT_I2C_SCL, serial clock
+- I2C2_SDA on PB11: INT_I2C_SDA, serial data 
+
+### PDLC driver
+
+- DAC_OUT1 on PA4: PDLC_ADJ_A, AC waveform generator
+- DAC_OUT2 on PA5: PDLC_ADJ_B, AC waveform generator
+- 
+HV_EN
+HV_PG
+PDLC_PG_A
+PDLC_PG_B
+PDLC_EN
+
+TIM6 and TIM7 reserved for internal use to initiate DAC DMA requests.
+
+### Control I/O
+
+- GPIO on PA0 (WKUP1, EXTI0): CTRL_MODE, mode button, active low
+- GPIO on PA1 (EXTI1): CTRL_SET, setting button, active low
+- GPIO on PC13 (WKUP2, EXTI13): CTRL_ENABLE, output enable switch, active low
+- TIM10_CH1 on PB8: CTRL_LOAD_EN
+
+### Indicator LEDs
+
+- TIM3_CH1 on PA6: LED_STATUS_R, PWM output
+- TIM3_CH2 on PA7: LED_STATUS_G, PWM output
+- TIM3_CH3 on PB0: LED_STATUS_B, PWM output
+- TIM3_CH4 on PB1: LED_AUX, PWM output
+
+### Unused pins available for expansion
+
+- PA2
+- PA3
+- PA8
+- PA9
+- PA10
+- PA11
+- PA12
+- PA15
+- PB4
+- PB5
+- PB6
+- PB7
+- PB13
+- PB14
+- PB15
+- PH0
+- PH1
+
+- PA8 (TIM3_CH4, TIM14_CH1, USART2_TX)
+- PA11 (ADC_IN11)
+- PA12 (ADC_IN12)
+- PA15 (TIM2_CH1, USART2_RX)
+- PB12 (ADC_IN22, TIM1_BKIN)
+- PB13 (---)
+
+### [System bootloader](https://www.st.com/resource/en/application_note/an2606-stm32-microcontroller-system-memory-boot-mode-stmicroelectronics.pdf) configured pins
+
+- Can access system bootloader via the console UART
+- Pull-up inputs: PA10, PD6
+- Pull-up outputs: PA9, PD5
+
 ## References
 
 ### Documents
+
+#### STM32
+
+[AN3216 Getting started with STM32L1xxx hardware development](https://www.st.com/resource/en/application_note/an3216-getting-started-with-stm32l1xxx-hardware-development-stmicroelectronics.pdf)
+
+[STM32L151C8-A datasheet](https://www.st.com/resource/en/datasheet/stm32l151c8-a.pdf)
 
 #### [SDAA033 DC to AC Conversion with DC to DC Buck Converters for PDLC Displays](https://www.ti.com/lit/an/sdaa033/sdaa033.pdf)
 

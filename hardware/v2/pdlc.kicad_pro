@@ -543,10 +543,19 @@
       "/HV": [
         "High Voltage"
       ],
+      "/LOAD": [
+        "Power"
+      ],
       "/PDLC_OUT_A": [
         "High Voltage"
       ],
       "/PDLC_OUT_B": [
+        "High Voltage"
+      ],
+      "/VDDA": [
+        "Power"
+      ],
+      "Net-(D2-A)": [
         "High Voltage"
       ],
       "Net-(D5-A)": [
@@ -556,6 +565,9 @@
         "Power"
       ],
       "Net-(U2-VCC)": [
+        "Power"
+      ],
+      "Net-(U4-VCC)": [
         "Power"
       ],
       "Net-(U5-BOOT)": [
@@ -568,6 +580,12 @@
         "High Voltage"
       ],
       "Net-(U6-SW)": [
+        "High Voltage"
+      ],
+      "Net-(U7-BOOT)": [
+        "High Voltage"
+      ],
+      "Net-(U7-SW)": [
         "High Voltage"
       ]
     },
