@@ -37,16 +37,16 @@
         "other_text_thickness": 0.15,
         "other_text_upright": false,
         "pads": {
-          "drill": 0.8,
-          "height": 1.27,
-          "width": 2.54
+          "drill": 1.4,
+          "height": 3.6,
+          "width": 2.0
         },
         "silk_line_width": 0.1,
         "silk_text_italic": false,
         "silk_text_size_h": 1.0,
         "silk_text_size_v": 1.0,
-        "silk_text_thickness": 0.1,
-        "silk_text_upright": false,
+        "silk_text_thickness": 0.15,
+        "silk_text_upright": true,
         "zones": {
           "min_clearance": 0.5
         }
@@ -58,7 +58,56 @@
           "width": 0.0
         }
       ],
-      "drc_exclusions": [],
+      "drc_exclusions": [
+        [
+          "lib_footprint_mismatch|83000000|123000000|68e1c80e-162f-4a93-9783-efb8978a7b12|00000000-0000-0000-0000-000000000000",
+          ""
+        ],
+        [
+          "lib_footprint_mismatch|83000000|77000000|6714f6f8-a60b-4145-bf79-cbc507c0030f|00000000-0000-0000-0000-000000000000",
+          ""
+        ],
+        [
+          "lib_footprint_mismatch|98500000|82700000|5fe6a795-3b28-4772-b60b-91a025aa1773|00000000-0000-0000-0000-000000000000",
+          ""
+        ],
+        [
+          "silk_edge_clearance|159729154|124005000|49dbfbae-eb70-4102-b55b-8e46262a8894|596f5ed5-251f-44ac-ae98-67a7071f0b9f",
+          ""
+        ],
+        [
+          "silk_edge_clearance|160000000|101385000|87453b05-0b5c-412f-a6ea-a9e815072ba6|dafdc17e-5fae-41c5-b1af-bd0eab4c103f",
+          ""
+        ],
+        [
+          "silk_edge_clearance|75000000|111110000|3b3f320e-9719-4880-8351-d71a15557be8|265edd9c-6186-4ab3-9f1f-06c942a72d1c",
+          ""
+        ],
+        [
+          "silk_edge_clearance|75000000|111110000|3b3f320e-9719-4880-8351-d71a15557be8|b2dd3282-d5c6-4541-83ac-2f1516b92f33",
+          ""
+        ],
+        [
+          "silk_edge_clearance|75000000|88890000|3b3f320e-9719-4880-8351-d71a15557be8|2db3078d-83ea-4a79-9a6e-e1b46d02ea50",
+          ""
+        ],
+        [
+          "silk_edge_clearance|75000000|88890000|3b3f320e-9719-4880-8351-d71a15557be8|ff735792-db8c-4f18-ba3b-9c7c0bab3129",
+          ""
+        ],
+        [
+          "starved_thermal|136290000|80250000|1ff86b9c-b345-4de5-aa82-7fbf2cea9a5b|4773ad8a-1673-4165-9983-f7368e452125|In2.Cu",
+          ""
+        ],
+        [
+          "starved_thermal|136290000|80250000|af5bb213-b24f-46b3-9526-4b5afb9c76bf|4773ad8a-1673-4165-9983-f7368e452125|F.Cu",
+          ""
+        ],
+        [
+          "starved_thermal|138830000|80250000|1ff86b9c-b345-4de5-aa82-7fbf2cea9a5b|3f83d14b-0336-4854-ae7f-e5b949c46537|In2.Cu",
+          ""
+        ]
+      ],
       "meta": {
         "version": 2
       },
@@ -190,7 +239,10 @@
         0.0,
         0.2,
         0.3,
-        0.4
+        0.4,
+        0.6,
+        1.0,
+        2.0
       ],
       "tuning_pattern_settings": {
         "diff_pair_defaults": {
@@ -503,12 +555,34 @@
         "wire_width": 6
       },
       {
+        "bus_width": 12,
+        "line_style": 0,
+        "name": "Analog",
+        "pcb_color": "rgba(0, 0, 0, 0.000)",
+        "priority": 0,
+        "schematic_color": "rgb(0, 194, 194)",
+        "wire_width": 12
+      },
+      {
         "bus_width": 24,
+        "clearance": 0.2,
+        "line_style": 0,
+        "name": "EXT I2C Isolation",
+        "pcb_color": "rgba(0, 0, 0, 0.000)",
+        "priority": 1,
+        "schematic_color": "rgb(0, 194, 0)",
+        "track_width": 0.2,
+        "wire_width": 12
+      },
+      {
+        "bus_width": 24,
+        "clearance": 0.6,
         "line_style": 0,
         "name": "High Voltage",
         "pcb_color": "rgba(0, 0, 0, 0.000)",
-        "priority": 0,
+        "priority": 2,
         "schematic_color": "rgb(194, 194, 0)",
+        "track_width": 0.4,
         "wire_width": 18
       },
       {
@@ -517,7 +591,7 @@
         "line_style": 0,
         "name": "Power",
         "pcb_color": "rgba(0, 0, 0, 0.000)",
-        "priority": 1,
+        "priority": 3,
         "schematic_color": "rgb(255, 0, 0)",
         "track_width": 0.4,
         "wire_width": 12
@@ -535,18 +609,54 @@
         "Power"
       ],
       "/BUS_3V3": [
-        "Power"
+        "EXT I2C Isolation"
       ],
       "/BUS_GND": [
-        "Power"
+        "EXT I2C Isolation"
+      ],
+      "/BUS_SCL": [
+        "EXT I2C Isolation"
+      ],
+      "/BUS_SDA": [
+        "EXT I2C Isolation"
       ],
       "/HV": [
         "High Voltage"
+      ],
+      "/HV_FB": [
+        "Analog"
+      ],
+      "/HV_UVLO": [
+        "Analog"
+      ],
+      "/LOAD": [
+        "Power"
+      ],
+      "/LOAD_OUT": [
+        "Power"
+      ],
+      "/PDLC_ADJ_A": [
+        "Analog"
+      ],
+      "/PDLC_ADJ_B": [
+        "Analog"
       ],
       "/PDLC_OUT_A": [
         "High Voltage"
       ],
       "/PDLC_OUT_B": [
+        "High Voltage"
+      ],
+      "/VDDA": [
+        "Power"
+      ],
+      "/pdlc driver a/FB": [
+        "Analog"
+      ],
+      "/pdlc driver b/FB": [
+        "Analog"
+      ],
+      "Net-(D2-A)": [
         "High Voltage"
       ],
       "Net-(D5-A)": [
@@ -556,6 +666,9 @@
         "Power"
       ],
       "Net-(U2-VCC)": [
+        "Power"
+      ],
+      "Net-(U4-VCC)": [
         "Power"
       ],
       "Net-(U5-BOOT)": [
@@ -568,6 +681,12 @@
         "High Voltage"
       ],
       "Net-(U6-SW)": [
+        "High Voltage"
+      ],
+      "Net-(U7-BOOT)": [
+        "High Voltage"
+      ],
+      "Net-(U7-SW)": [
         "High Voltage"
       ]
     },
@@ -668,15 +787,15 @@
           "show": false
         },
         {
-          "group_by": false,
+          "group_by": true,
           "label": "LCSC",
           "name": "LCSC",
-          "show": false
+          "show": true
         },
         {
           "group_by": false,
-          "label": "LCSC_Alternative",
-          "name": "LCSC_Alternative",
+          "label": "LCSC Alternative",
+          "name": "LCSC Alternative",
           "show": false
         },
         {
@@ -687,20 +806,8 @@
         },
         {
           "group_by": false,
-          "label": "MF",
-          "name": "MF",
-          "show": false
-        },
-        {
-          "group_by": false,
-          "label": "MP",
-          "name": "MP",
-          "show": false
-        },
-        {
-          "group_by": false,
-          "label": "MPN",
-          "name": "MPN",
+          "label": "Part",
+          "name": "Part",
           "show": false
         },
         {
@@ -716,16 +823,10 @@
           "show": false
         },
         {
-          "group_by": false,
-          "label": "Price",
-          "name": "Price",
-          "show": false
-        },
-        {
-          "group_by": false,
+          "group_by": true,
           "label": "Rating",
           "name": "Rating",
-          "show": false
+          "show": true
         },
         {
           "group_by": false,
@@ -735,8 +836,8 @@
         },
         {
           "group_by": false,
-          "label": "Alternative",
-          "name": "Alternative",
+          "label": "Part Alternative",
+          "name": "Part Alternative",
           "show": false
         },
         {

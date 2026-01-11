@@ -1,29 +1,53 @@
 # PDLC driver v2
 
-**Status: In development**
+**Status: Ready for fabrication, not yet tested**
 
 ## Design synopsis
 
 The driver has the following major components:
 
 - [LM5158](https://www.ti.com/lit/ds/symlink/lm5158.pdf) boost converter produces high voltage DC at 300 mA
-- Two [LMR38010](https://www.ti.com/lit/ds/symlink/lmr38010.pdf) buck converters produce variable voltages for each AC leg
+- Two [LMR38010](https://www.ti.com/lit/ds/symlink/lmr38010.pdf) buck converters produce variable voltages between 3 V and 63 V for each AC leg
 - [STM32L151C8T6](https://www.st.com/resource/en/datasheet/stm32l151c8-a.pdf) microcontroller generates waveforms and monitors control signals
-- [ISO1640](https://www.ti.com/lit/ds/symlink/iso1640.pdf) galvanically isolates the external I2C bus when connected to other equipment
+- [ISO1640](https://www.ti.com/lit/ds/symlink/iso1640.pdf) galvanically isolates the external I2C bus when connected to other devices
 - [LP2985-33](http://www.ti.com/lit/ds/symlink/lp2985.pdf) LDO powers the logic circuits at 3.3 V
 - Circuit protection elements
   - Supply: 2 A polyfuse, TVS, UVLO battery saver
   - PDLC: undervoltage, overcurrent hiccup, short-circuit, bleed resistor, TVS, power good sequencing
   - Switch inputs: ESD diodes
-  - I2C bus: galvanic isolation
+  - External I2C bus: galvanic isolation, hot plug
 
-[View the schematics in PDF format](pdlc.pdf)
+## Illustrations
 
-## Circuit board
+[Schematics PDF](pdlc.pdf)
 
-![Front side of circuit board](pdlc-front.png)
+<details>
+<summary>PCB front and back (expand to view)</summary>
 
-![Back side of circuit board](pdlc-back.png)
+### PCB front
+![PCB front](pdlc-front.png)
+
+### PCB back
+![PCB back](pdlc-back.png)
+
+</details>
+
+## Fabrication
+
+Use the `JLCPCB fabrication toolkit` plug-in to generate files for JLCPCB.
+
+Fabrication parameters:
+
+- Material: 4 layers, FR4 TG155, ENIG, 1 oz outer copper, 0.5 oz inner copper
+- Via covering: plugged
+- Min via hole size: 0.3 mm (default)
+- Board outline tolerance: 0.2 mm (default)
+- Assembly side: top
+- Tooling holes: by customer
+- Parts selection: by customer
+- Solder paste: high temp (default)
+
+Because the terminal blocks plugs must be bought separately, it may be cheaper to solder the receptacles manually after manufacture.
 
 ## Details
 
@@ -53,7 +77,7 @@ The design was then modified as follows:
 
 - Selected a small format 10 mm x 10 mm shielded drum core inductor: 15 uH Wurth 7447714150 in WE-PD 1050 package.
 - Selected X7R/X7S MLCC capacitors with relatively small DC bias derating at the operating voltage based on the manufacturer datasheets.
-- Selected UVLO resistors with more common values.  Refer to [calc.py](./calc.py) for the calculations.
+- Selected UVLO resistors with more common values.  Refer to [calc.py](./calc.py) for the calculations.  Added transistors to pull UVLO low when not enabled.
 - Selected feedback resistors with more common values, Rfb_t = 330 K, Rfb_b = 5.1K.  So Vout = 1 V * (Rfb_t / Rfb_b + 1) = 65.7 V.
 - Added bulk capacitors to the input and output.
 - Optimized part selection for cost and availability at JLCPCB.  Unfortunately, the 22 uH inductor used in the previous design (with a lower switching frequency) was out of stock so 15 uH was used (at a higher switching frequency) instead.
@@ -101,19 +125,106 @@ Operating points:
 | max   | 3.10 V |   1.61 V |     3847 |
 | Vdda  | 3.30 V |  -2.79 V |     4095 |
 
+## Pin function map
+
+### Debug
+
+- NRST: RESET
+- BOOT0: BOOT0, boot mode selection, external pull-down
+- BOOT1 on PB2: BOOT1, boot mode selection, external pull-down
+- SWDIO on PA13: SWDIO, serial wire data
+- SWCLK on PA14: SWCLK, serial wire clock
+- SWO/JTDO on PB3: SWO, serial wire trace output
+
+### Console
+
+- USART1_TX on PA9: CONSOLE_TX, serial TX
+- USART1_RX on PA10: CONSOLE_RX, serial RX
+
+### External I2C bus (receives messages as target)
+
+- I2C1_SCL on PB8: EXT_I2C_SCL, serial clock
+- I2C1_SDA on PB9: EXT_I2C_SDA, serial data 
+
+### Internal I2C bus (sends messages as controller)
+
+- I2C2_SCL on PB10: INT_I2C_SCL, serial clock
+- I2C2_SDA on PB11: INT_I2C_SDA, serial data 
+
+### PDLC driver
+
+- GPIO on PB4: HV_EN
+- GPIO on PB5: HV_PG
+- DAC_OUT1 on PA4: PDLC_ADJ_A, AC waveform generator
+- DAC_OUT2 on PA5: PDLC_ADJ_B, AC waveform generator
+- GPIO on PA8: PDLC_EN
+- GPIO on PC14: PDLC_PG_A
+- GPIO on PC15: PDLC_PG_B
+
+TIM6 and TIM7 reserved for internal use to initiate DAC DMA requests.
+
+### Control I/O
+
+- GPIO on PA0 (EXTI0, WKUP1): CTRL_MODE, mode button, active low, wake-up from standby occurs on low-to-high transition (after the switch is released)
+- GPIO on PA1 (EXTI1): CTRL_SET, setting button, active low
+- GPIO on PA2 (EXTI2): CTRL_EN, output enable switch, active low
+- TIM10_CH1 on PB12: LOAD_EN, load enable signal, active low
+
+When LOAD_EN is high, then LOAD_OUT is driven low, rated for 200 mA at 20 V.
+
+### Indicator LEDs
+
+- TIM3_CH1 on PA6: LED_STATUS_R, PWM output, active low
+- TIM3_CH2 on PA7: LED_STATUS_G, PWM output, active low
+- TIM3_CH3 on PB0: LED_STATUS_B, PWM output, active low
+- TIM3_CH4 on PB1: LED_POWER, PWM output, active low
+
+### Unused pins available for expansion
+
+- PA3 (ADC_IN3, COMP1_INP, TIM2_CH4, TIM9_CH2)
+- PA15 (---)
+- PB6 (TIM4_CH1)
+- PB7 (TIM4_CH2)
+- PB13 (ADC_IN19, COMP1_INP, TIM9_CH1)
+- PB14 (ADC_IN20, COMP1_INP, TIM9_CH2)
+- PB15 (ADC_IN21, COMP1_INP, TIM11_CH1)
+- PC13 (WKUP2): wake-up from standby occurs on low-to-high transition when enabled in PWR_CSR register, external pull-down
+
+### Unused pins reserved
+
+- PA11 (USB_DM): USB data -
+- PA12 (USB_DP): USB data +
+- PH0 (OSC_IN): HSE oscillator (requires 24 MHz clock for USB)
+- PH1 (OSC_OUT): HSE oscillator
+
+### [System bootloader](https://www.st.com/resource/en/application_note/an2606-stm32-microcontroller-system-memory-boot-mode-stmicroelectronics.pdf) configured pins
+
+- Can access system bootloader via the console UART or USB
+- Pull-up inputs: PA10
+- Pull-up outputs: PA9
+- USB: PA11, PA12
+
 ## References
 
 ### Documents
 
-#### [SDAA033 DC to AC Conversion with DC to DC Buck Converters for PDLC Displays](https://www.ti.com/lit/an/sdaa033/sdaa033.pdf)
+#### STM32
+
+[AN3216 Getting started with STM32L1xxx hardware development](https://www.st.com/resource/en/application_note/an3216-getting-started-with-stm32l1xxx-hardware-development-stmicroelectronics.pdf)
+
+[STM32L151C8-A datasheet](https://www.st.com/resource/en/datasheet/stm32l151c8-a.pdf)
+
+[STM32L1xxxx reference manual](https://www.st.com/resource/en/reference_manual/rm0038-stm32l100xx-stm32l151xx-stm32l152xx-and-stm32l162xx-advanced-armbased-32bit-mcus-stmicroelectronics.pdf)
+
+#### [DC to AC Conversion with DC to DC Buck Converters for PDLC Displays (SDAA033)](https://www.ti.com/lit/an/sdaa033/sdaa033.pdf)
 
 Using two buck converters is roughly equivalent to driving an H-bridge through an LC filter (particularly when using synchronous rectification) and uses fewer components.  The buck converter tightly monitors the feedback loop to ensure a stable output voltage under varying load conditions and handle faults which frees the microcontroller to do other work.  This is the model for the design implemented here.
 
-#### [Smart Glass PDLC Film Driver - AN6205](https://ww1.microchip.com/downloads/aemDocuments/documents/APID/ApplicationNotes/ApplicationNotes/Smart-Glass-PDLC-Driver-DS00006205.pdf)
+#### [Smart Glass PDLC Film Driver (AN6205)](https://ww1.microchip.com/downloads/aemDocuments/documents/APID/ApplicationNotes/ApplicationNotes/Smart-Glass-PDLC-Driver-DS00006205.pdf)
 
 Describes a more traditional PDLC driver based on an H-bridge and LC filter.
 
-#### [An Engineer's Guide to Current Sensing](https://www.ti.com/lit/eb/slyy154b/slyy154b.pdf)
+#### [An Engineer's Guide to Current Sensing (SLYY154B)](https://www.ti.com/lit/eb/slyy154b/slyy154b.pdf)
 
 During the design process, I considered adding current sensing to protect against faults in the PDLC film when driving it with an H-bridge.  The [INA381A3](https://www.ti.com/lit/ds/symlink/ina381.pdf) in particular has a comparator output that could be attached to a timer break pin to disable the output quickly and latch until the fault is resolved or it could be used to implement cycle-by-cycle current limiting to more aggressively control the slew rate of the output.  That said, the boost converter PGOOD signal will be deasserted if the output voltage drops too low due to an overload condition or short-to-ground (which cannot be detected by low-side current sensing) so no additional protection seems necessary.
 
@@ -121,20 +232,19 @@ During the design process, I considered adding current sensing to protect agains
 
 Describes the theory of designing current control mode compensation networks.
 
-#### [Design Feedforward Capacitor for LMR14020](https://www.ti.com/lit/an/snva798/snva798.pdf)
+#### [Design Feedforward Capacitor for LMR14020 (SNVA798)](https://www.ti.com/lit/an/snva798/snva798.pdf)
 
 Describes the choice of a feed forward capacitor for an internally compensated current control mode buck converter.  The design includes a DNP pad in case it is needed.  Typical values are in the pF range.
 
-#### [Control mode quick reference](https://www.ti.com/lit/an/slyt710b/slyt710b.pdf)
+#### [Control mode quick reference (SLYT710B)](https://www.ti.com/lit/an/slyt710b/slyt710b.pdf)
 
 A great summary of 15 different switch mode power supply control modes and their behavior.  Useful for comparing buck converter architectures.
 
-#### [AN-1481 Controlling Output Ripple and Achieving ESR Independence in Constant On-Time (COT) Regulator Designs](https://www.ti.com/lit/an/snva166a/snva166a.pdf)
+#### [Controlling Output Ripple and Achieving ESR Independence in Constant On-Time (COT) Regulator Designs (SNVA166A / AN-1481)](https://www.ti.com/lit/an/snva166a/snva166a.pdf)
 
 Describes how to generate ripple in the feedback network for COT mode buck converters.
 
-#### [SLYT777 Methods of output-voltage adjustment for DC/DC converters
-](https://www.ti.com/lit/an/slyt777/slyt777.pdf)
+#### [Methods of output-voltage adjustment for DC/DC converters (SLYT777)](https://www.ti.com/lit/an/slyt777/slyt777.pdf)
 
 Describes how to adjust the voltage feedback loop.  Used a DAC for this design.
 
@@ -145,7 +255,7 @@ Describes how to adjust the voltage feedback loop.  Used a DAC for this design.
 Notable qualities:
 
 - Synchronous rectification improves efficiency and low voltage output operation.
-- The control mode influences component selection.  Constant on-time (COT) and pulse frequency modulation (PFM) mode require a minimum output ripple and additional components may be needed to generate that ripple in the feedback network.  Current control mode (CC) requires requires tuning a compensation network (unless internally integrated).  Pulse frequence mode (PFM) 
+- The control mode influences component selection.  Constant on-time (COT) and pulse frequency modulation (PFM) mode require a minimum output ripple and additional components may be needed to generate that ripple in the feedback network.  Current control mode (CC) requires requires tuning a compensation network (unless internally integrated).  Pulse frequency mode (PFM) 
 - The configurable soft start input of some devices may potentially be used to adjust the internal voltage reference and thereby modulate the output voltage target instead of injecting a signal into the feedback network.
 
 A selection of parts available at at JLCPCB/LCSC (as of January 2026):
@@ -176,3 +286,18 @@ A selection of parts available at at JLCPCB/LCSC (as of January 2026):
 ## Errata
 
 None yet.
+
+## Updates
+
+### Major changes since v1
+
+- Use an MCU to generate the commutation waveforms instead of a 555 timer.
+- Add switches and indicates to toggle the mode and configure the behavior of the driver.
+- Add an external I2C interface for fine-grained control of the driver by other devices.
+- Use buck converters to produce the AC output with LC filtering instead of H-bridges with uncontrolled di/dt (which sort of worked for small panels and failed for larger ones).
+- Add ESD protection to the external interfaces.
+
+### Remarks
+
+- The via stitching pattern is based on a 2 mm gap, 0.5 mm diameter, 0.3 mm hole.  Unfortunately the `kicad-action-scripts` plug-in does not respect keepout areas consistently so the vias were placed by hand.
+- The schematics are plotted with dark theme `Arcana`.

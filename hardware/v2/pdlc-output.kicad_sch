@@ -436,7 +436,7 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Diode:SMAJ78A"
+		(symbol "Diode:SMF16A"
 			(pin_numbers
 				(hide yes)
 			)
@@ -455,7 +455,7 @@
 					)
 				)
 			)
-			(property "Value" "SMAJ78A"
+			(property "Value" "SMF16A"
 				(at 0 -2.54 0)
 				(effects
 					(font
@@ -463,7 +463,7 @@
 					)
 				)
 			)
-			(property "Footprint" "Diode_SMD:D_SMA"
+			(property "Footprint" "Diode_SMD:D_SMF"
 				(at 0 -5.08 0)
 				(effects
 					(font
@@ -472,7 +472,7 @@
 					(hide yes)
 				)
 			)
-			(property "Datasheet" "https://www.littelfuse.com/media?resourcetype=datasheets&itemid=75e32973-b177-4ee3-a0ff-cedaf1abdb93&filename=smaj-datasheet"
+			(property "Datasheet" "https://www.vishay.com/doc?85881"
 				(at -1.27 0 0)
 				(effects
 					(font
@@ -481,7 +481,7 @@
 					(hide yes)
 				)
 			)
-			(property "Description" "400W unidirectional Transient Voltage Suppressor, 78.0Vr, SMA(DO-214AC)"
+			(property "Description" "200W unidirectional Transil Transient Voltage Suppressor, 16Vrwm, SMF"
 				(at 0 0 0)
 				(effects
 					(font
@@ -490,7 +490,7 @@
 					(hide yes)
 				)
 			)
-			(property "ki_keywords" "unidirectional diode TVS voltage suppressor"
+			(property "ki_keywords" "diode TVS voltage suppressor"
 				(at 0 0 0)
 				(effects
 					(font
@@ -499,7 +499,7 @@
 					(hide yes)
 				)
 			)
-			(property "ki_fp_filters" "D*SMA*"
+			(property "ki_fp_filters" "D*SMF*"
 				(at 0 0 0)
 				(effects
 					(font
@@ -508,7 +508,7 @@
 					(hide yes)
 				)
 			)
-			(symbol "SMAJ78A_0_1"
+			(symbol "SMF16A_0_1"
 				(polyline
 					(pts
 						(xy -0.762 1.27) (xy -1.27 1.27) (xy -1.27 -1.27)
@@ -534,7 +534,7 @@
 					)
 				)
 			)
-			(symbol "SMAJ78A_1_1"
+			(symbol "SMF16A_1_1"
 				(pin passive line
 					(at -3.81 0 0)
 					(length 2.54)
@@ -1884,6 +1884,38 @@
 	(netclass_flag ""
 		(length 2.54)
 		(shape round)
+		(at 113.03 105.41 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "05a085b0-bf10-4507-81f8-7728fc8e9337")
+		(property "Netclass" "Analog"
+			(at 113.7285 107.95 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Component Class" ""
+			(at -179.07 -15.24 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+					(italic yes)
+				)
+			)
+		)
+	)
+	(netclass_flag ""
+		(length 2.54)
+		(shape round)
 		(at 124.46 102.87 270)
 		(fields_autoplaced yes)
 		(effects
@@ -1902,6 +1934,38 @@
 				)
 				(justify left)
 				(hide yes)
+			)
+		)
+	)
+	(netclass_flag ""
+		(length 2.54)
+		(shape round)
+		(at 154.94 125.73 270)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "2285f04c-2fa8-4d57-af88-a450bbb7eb9c")
+		(property "Netclass" "Analog"
+			(at 157.48 125.0315 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Component Class" ""
+			(at -137.16 5.08 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+					(italic yes)
+				)
 			)
 		)
 	)
@@ -1988,7 +2052,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "14427eaa-fbbf-401e-a2ce-02f98d21db33")
-		(property "Reference" "R14"
+		(property "Reference" "R38"
 			(at 84.5821 115.7435 0)
 			(effects
 				(font
@@ -2060,6 +2124,15 @@
 				(justify right)
 			)
 		)
+		(property "Package" ""
+			(at 86.36 119.38 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "59cf57c5-9c74-43fa-be1c-5d17d7948e03")
 		)
@@ -2069,11 +2142,11 @@
 		(instances
 			(project "pdlc"
 				(path "/1a1907ab-76a9-424d-a737-799a5cd818d3/87035a8b-4549-49bf-94d3-2b5508ef5992"
-					(reference "R27")
+					(reference "R44")
 					(unit 1)
 				)
 				(path "/1a1907ab-76a9-424d-a737-799a5cd818d3/d5bbf22c-3b36-4351-a146-9ed2d187a457"
-					(reference "R14")
+					(reference "R38")
 					(unit 1)
 				)
 			)
@@ -2089,7 +2162,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "1c38421e-a6db-4655-a355-80676e09b07f")
-		(property "Reference" "#PWR016"
+		(property "Reference" "#PWR047"
 			(at 48.26 102.87 0)
 			(effects
 				(font
@@ -2140,11 +2213,11 @@
 		(instances
 			(project "pdlc"
 				(path "/1a1907ab-76a9-424d-a737-799a5cd818d3/87035a8b-4549-49bf-94d3-2b5508ef5992"
-					(reference "#PWR025")
+					(reference "#PWR052")
 					(unit 1)
 				)
 				(path "/1a1907ab-76a9-424d-a737-799a5cd818d3/d5bbf22c-3b36-4351-a146-9ed2d187a457"
-					(reference "#PWR016")
+					(reference "#PWR047")
 					(unit 1)
 				)
 			)
@@ -2160,7 +2233,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "314a019c-ee4b-4f83-b764-a934187d4c68")
-		(property "Reference" "R13"
+		(property "Reference" "R36"
 			(at 141.478 108.1235 0)
 			(effects
 				(font
@@ -2232,6 +2305,15 @@
 				(justify left)
 			)
 		)
+		(property "Package" ""
+			(at 139.7 111.76 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "3d66c6b3-c3c3-4b50-8982-7c5f5257f8db")
 		)
@@ -2241,11 +2323,11 @@
 		(instances
 			(project "pdlc"
 				(path "/1a1907ab-76a9-424d-a737-799a5cd818d3/87035a8b-4549-49bf-94d3-2b5508ef5992"
-					(reference "R24")
+					(reference "R42")
 					(unit 1)
 				)
 				(path "/1a1907ab-76a9-424d-a737-799a5cd818d3/d5bbf22c-3b36-4351-a146-9ed2d187a457"
-					(reference "R13")
+					(reference "R36")
 					(unit 1)
 				)
 			)
@@ -2262,7 +2344,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "378e013c-008e-46ba-a5b4-6c8ad807e0b0")
-		(property "Reference" "#PWR07"
+		(property "Reference" "#PWR049"
 			(at 116.84 119.38 0)
 			(effects
 				(font
@@ -2312,11 +2394,121 @@
 		(instances
 			(project "pdlc"
 				(path "/1a1907ab-76a9-424d-a737-799a5cd818d3/87035a8b-4549-49bf-94d3-2b5508ef5992"
-					(reference "#PWR027")
+					(reference "#PWR054")
 					(unit 1)
 				)
 				(path "/1a1907ab-76a9-424d-a737-799a5cd818d3/d5bbf22c-3b36-4351-a146-9ed2d187a457"
-					(reference "#PWR07")
+					(reference "#PWR049")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Diode:SMF16A")
+		(at 231.14 96.52 270)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "51f9b810-4a34-4241-bf3d-a829cb3a739b")
+		(property "Reference" "D8"
+			(at 233.172 94.0957 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "SMF70A"
+			(at 233.172 96.52 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Diode_SMD:D_SMF"
+			(at 226.06 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.littelfuse.com/assetdocs/tvs-diodes-smf-datasheet"
+			(at 231.14 95.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "200W unidirectional Transil Transient Voltage Suppressor, 70Vrwm, SMF"
+			(at 231.14 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Rating" "70Vrwm"
+			(at 233.172 98.9443 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "LCSC" "C1976954"
+			(at 231.14 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "FT Rotation Offset" "0"
+			(at 231.14 96.52 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Package" ""
+			(at 231.14 96.52 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "18db9c6f-ff50-4172-a514-d2568045a494")
+		)
+		(pin "1"
+			(uuid "65da6180-1286-41a2-9397-5103bfaf80d9")
+		)
+		(instances
+			(project ""
+				(path "/1a1907ab-76a9-424d-a737-799a5cd818d3/87035a8b-4549-49bf-94d3-2b5508ef5992"
+					(reference "D9")
+					(unit 1)
+				)
+				(path "/1a1907ab-76a9-424d-a737-799a5cd818d3/d5bbf22c-3b36-4351-a146-9ed2d187a457"
+					(reference "D8")
 					(unit 1)
 				)
 			)
@@ -2333,7 +2525,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "567cba69-078b-4fe2-9a17-d359a5772988")
-		(property "Reference" "#PWR014"
+		(property "Reference" "#PWR051"
 			(at 86.36 130.81 0)
 			(effects
 				(font
@@ -2383,11 +2575,11 @@
 		(instances
 			(project "pdlc"
 				(path "/1a1907ab-76a9-424d-a737-799a5cd818d3/87035a8b-4549-49bf-94d3-2b5508ef5992"
-					(reference "#PWR036")
+					(reference "#PWR056")
 					(unit 1)
 				)
 				(path "/1a1907ab-76a9-424d-a737-799a5cd818d3/d5bbf22c-3b36-4351-a146-9ed2d187a457"
-					(reference "#PWR014")
+					(reference "#PWR051")
 					(unit 1)
 				)
 			)
@@ -2403,7 +2595,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "5c658605-9d83-4447-8e68-36c55841546e")
-		(property "Reference" "R15"
+		(property "Reference" "R34"
 			(at 141.478 92.8835 0)
 			(effects
 				(font
@@ -2475,6 +2667,15 @@
 				(justify left)
 			)
 		)
+		(property "Package" ""
+			(at 139.7 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "0c67b306-c96d-473b-8fb1-d61b6ae6d4e5")
 		)
@@ -2484,11 +2685,11 @@
 		(instances
 			(project "pdlc"
 				(path "/1a1907ab-76a9-424d-a737-799a5cd818d3/87035a8b-4549-49bf-94d3-2b5508ef5992"
-					(reference "R22")
+					(reference "R40")
 					(unit 1)
 				)
 				(path "/1a1907ab-76a9-424d-a737-799a5cd818d3/d5bbf22c-3b36-4351-a146-9ed2d187a457"
-					(reference "R15")
+					(reference "R34")
 					(unit 1)
 				)
 			)
@@ -2504,7 +2705,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "657c3d2f-d337-4e07-9ee3-349a19545ae4")
-		(property "Reference" "C25"
+		(property "Reference" "C34"
 			(at 173.101 92.8835 0)
 			(effects
 				(font
@@ -2576,7 +2777,16 @@
 				(hide yes)
 			)
 		)
-		(property "MPN" "CL31B104KCFNNNE"
+		(property "Package" ""
+			(at 170.18 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Part" "CL31B104KCFNNNE"
 			(at 170.18 96.52 0)
 			(effects
 				(font
@@ -2594,11 +2804,11 @@
 		(instances
 			(project "pdlc"
 				(path "/1a1907ab-76a9-424d-a737-799a5cd818d3/87035a8b-4549-49bf-94d3-2b5508ef5992"
-					(reference "C24")
+					(reference "C41")
 					(unit 1)
 				)
 				(path "/1a1907ab-76a9-424d-a737-799a5cd818d3/d5bbf22c-3b36-4351-a146-9ed2d187a457"
-					(reference "C25")
+					(reference "C34")
 					(unit 1)
 				)
 			)
@@ -2614,7 +2824,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "711ea02b-3772-4c83-8eb5-818b4b1d0d09")
-		(property "Reference" "C29"
+		(property "Reference" "C35"
 			(at 188.341 92.8835 0)
 			(effects
 				(font
@@ -2641,7 +2851,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "~"
+		(property "Datasheet" "https://pim.murata.com/en-us/pim/details/?partNum=GRM32EC72A106KE05%23"
 			(at 185.42 96.52 0)
 			(effects
 				(font
@@ -2686,7 +2896,7 @@
 				(hide yes)
 			)
 		)
-		(property "MPN" "GRM32EC72A106KE05L"
+		(property "Manufacturer" "Murata"
 			(at 185.42 96.52 0)
 			(effects
 				(font
@@ -2695,7 +2905,16 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer" "Murata"
+		(property "Package" ""
+			(at 185.42 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Part" "GRM32EC72A106KE05L"
 			(at 185.42 96.52 0)
 			(effects
 				(font
@@ -2713,11 +2932,11 @@
 		(instances
 			(project "pdlc"
 				(path "/1a1907ab-76a9-424d-a737-799a5cd818d3/87035a8b-4549-49bf-94d3-2b5508ef5992"
-					(reference "C32")
+					(reference "C42")
 					(unit 1)
 				)
 				(path "/1a1907ab-76a9-424d-a737-799a5cd818d3/d5bbf22c-3b36-4351-a146-9ed2d187a457"
-					(reference "C29")
+					(reference "C35")
 					(unit 1)
 				)
 			)
@@ -2733,7 +2952,7 @@
 		(dnp yes)
 		(fields_autoplaced yes)
 		(uuid "765450bb-9931-4981-97fa-3e8cb3064cdf")
-		(property "Reference" "C26"
+		(property "Reference" "C33"
 			(at 157.861 92.8835 0)
 			(effects
 				(font
@@ -2796,6 +3015,15 @@
 				(justify left)
 			)
 		)
+		(property "Package" ""
+			(at 154.94 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "e882ed80-1f92-4e57-b8e0-f74f15d7fdaa")
 		)
@@ -2805,11 +3033,11 @@
 		(instances
 			(project "pdlc"
 				(path "/1a1907ab-76a9-424d-a737-799a5cd818d3/87035a8b-4549-49bf-94d3-2b5508ef5992"
-					(reference "C23")
+					(reference "C40")
 					(unit 1)
 				)
 				(path "/1a1907ab-76a9-424d-a737-799a5cd818d3/d5bbf22c-3b36-4351-a146-9ed2d187a457"
-					(reference "C26")
+					(reference "C33")
 					(unit 1)
 				)
 			)
@@ -2825,7 +3053,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "89a1c4e8-d864-45b5-b49e-3e7b5e434118")
-		(property "Reference" "C28"
+		(property "Reference" "C31"
 			(at 77.851 92.8835 0)
 			(effects
 				(font
@@ -2897,7 +3125,16 @@
 				(hide yes)
 			)
 		)
-		(property "MPN" "CL31B104KCFNNNE"
+		(property "Package" ""
+			(at 74.93 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Part" "CL31B104KCFNNNE"
 			(at 74.93 96.52 0)
 			(effects
 				(font
@@ -2915,11 +3152,11 @@
 		(instances
 			(project "pdlc"
 				(path "/1a1907ab-76a9-424d-a737-799a5cd818d3/87035a8b-4549-49bf-94d3-2b5508ef5992"
-					(reference "C21")
+					(reference "C38")
 					(unit 1)
 				)
 				(path "/1a1907ab-76a9-424d-a737-799a5cd818d3/d5bbf22c-3b36-4351-a146-9ed2d187a457"
-					(reference "C28")
+					(reference "C31")
 					(unit 1)
 				)
 			)
@@ -2977,15 +3214,6 @@
 				(hide yes)
 			)
 		)
-		(property "MPN" "7447714680"
-			(at 132.08 90.17 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
 		(property "LCSC" "C5364067"
 			(at 132.08 90.17 90)
 			(effects
@@ -3012,6 +3240,33 @@
 			)
 		)
 		(property "Manufacturer" "Wurth"
+			(at 132.08 90.17 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "FT Rotation Offset" "270"
+			(at 132.08 90.17 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Package" ""
+			(at 132.08 90.17 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Part" "7447714680"
 			(at 132.08 90.17 90)
 			(effects
 				(font
@@ -3050,7 +3305,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "9d6c1477-69ac-43ca-8b08-ca6511242baf")
-		(property "Reference" "#PWR022"
+		(property "Reference" "#PWR048"
 			(at 248.92 102.87 0)
 			(effects
 				(font
@@ -3101,11 +3356,11 @@
 		(instances
 			(project "pdlc"
 				(path "/1a1907ab-76a9-424d-a737-799a5cd818d3/87035a8b-4549-49bf-94d3-2b5508ef5992"
-					(reference "#PWR026")
+					(reference "#PWR053")
 					(unit 1)
 				)
 				(path "/1a1907ab-76a9-424d-a737-799a5cd818d3/d5bbf22c-3b36-4351-a146-9ed2d187a457"
-					(reference "#PWR022")
+					(reference "#PWR048")
 					(unit 1)
 				)
 			)
@@ -3121,7 +3376,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "a702c918-ac14-49f7-afd9-2350e626917e")
-		(property "Reference" "C30"
+		(property "Reference" "C36"
 			(at 203.581 92.8835 0)
 			(effects
 				(font
@@ -3148,7 +3403,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "~"
+		(property "Datasheet" "https://pim.murata.com/en-us/pim/details/?partNum=GRM32EC72A106KE05%23"
 			(at 200.66 96.52 0)
 			(effects
 				(font
@@ -3193,7 +3448,7 @@
 				(hide yes)
 			)
 		)
-		(property "MPN" "GRM32EC72A106KE05L"
+		(property "Manufacturer" "Murata"
 			(at 200.66 96.52 0)
 			(effects
 				(font
@@ -3202,7 +3457,16 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer" "Murata"
+		(property "Package" ""
+			(at 200.66 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Part" "GRM32EC72A106KE05L"
 			(at 200.66 96.52 0)
 			(effects
 				(font
@@ -3220,103 +3484,11 @@
 		(instances
 			(project "pdlc"
 				(path "/1a1907ab-76a9-424d-a737-799a5cd818d3/87035a8b-4549-49bf-94d3-2b5508ef5992"
-					(reference "C33")
+					(reference "C43")
 					(unit 1)
 				)
 				(path "/1a1907ab-76a9-424d-a737-799a5cd818d3/d5bbf22c-3b36-4351-a146-9ed2d187a457"
-					(reference "C30")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Diode:SMAJ78A")
-		(at 231.14 96.52 270)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "b618c81b-d78c-4647-8205-5bd2d9d2aedd")
-		(property "Reference" "D1"
-			(at 233.172 94.0957 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "SMAJ78A"
-			(at 233.172 96.52 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Diode_SMD:D_SMA"
-			(at 226.06 96.52 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "https://jlcpcb.com/api/file/downloadByFileSystemAccessId/8560079084748230656"
-			(at 231.14 95.25 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "400W unidirectional Transient Voltage Suppressor, 78.0Vr, SMA(DO-214AC)"
-			(at 231.14 96.52 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC" "C135014"
-			(at 231.14 96.52 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Rating" "78Vrwm"
-			(at 233.172 98.9443 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(pin "1"
-			(uuid "1e36c03d-02e1-4a8e-a7b9-75cae8bf1ff0")
-		)
-		(pin "2"
-			(uuid "3f451944-b058-45f0-8a3f-331e93c9847d")
-		)
-		(instances
-			(project ""
-				(path "/1a1907ab-76a9-424d-a737-799a5cd818d3/87035a8b-4549-49bf-94d3-2b5508ef5992"
-					(reference "D2")
-					(unit 1)
-				)
-				(path "/1a1907ab-76a9-424d-a737-799a5cd818d3/d5bbf22c-3b36-4351-a146-9ed2d187a457"
-					(reference "D1")
+					(reference "C36")
 					(unit 1)
 				)
 			)
@@ -3332,7 +3504,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "c340ce81-8dcb-438d-905e-8dbeee2192d9")
-		(property "Reference" "R12"
+		(property "Reference" "R37"
 			(at 156.718 108.1235 0)
 			(effects
 				(font
@@ -3404,6 +3576,15 @@
 				(justify left)
 			)
 		)
+		(property "Package" ""
+			(at 154.94 111.76 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "5f02448d-612c-40a2-974e-3d505daccd9d")
 		)
@@ -3413,11 +3594,11 @@
 		(instances
 			(project "pdlc"
 				(path "/1a1907ab-76a9-424d-a737-799a5cd818d3/87035a8b-4549-49bf-94d3-2b5508ef5992"
-					(reference "R25")
+					(reference "R43")
 					(unit 1)
 				)
 				(path "/1a1907ab-76a9-424d-a737-799a5cd818d3/d5bbf22c-3b36-4351-a146-9ed2d187a457"
-					(reference "R12")
+					(reference "R37")
 					(unit 1)
 				)
 			)
@@ -3433,7 +3614,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "c59aa8b2-9a45-49d8-ae56-5a04aa8e7360")
-		(property "Reference" "C27"
+		(property "Reference" "C32"
 			(at 121.539 92.8835 0)
 			(effects
 				(font
@@ -3505,6 +3686,15 @@
 				(hide yes)
 			)
 		)
+		(property "Package" ""
+			(at 124.46 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "4efb8dab-430b-4659-a87a-1467ba1c1b3e")
 		)
@@ -3514,11 +3704,11 @@
 		(instances
 			(project "pdlc"
 				(path "/1a1907ab-76a9-424d-a737-799a5cd818d3/87035a8b-4549-49bf-94d3-2b5508ef5992"
-					(reference "C22")
+					(reference "C39")
 					(unit 1)
 				)
 				(path "/1a1907ab-76a9-424d-a737-799a5cd818d3/d5bbf22c-3b36-4351-a146-9ed2d187a457"
-					(reference "C27")
+					(reference "C32")
 					(unit 1)
 				)
 			)
@@ -3534,7 +3724,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "c8d2805d-ccb6-4ac5-92ec-e7a4d7de04bf")
-		(property "Reference" "C31"
+		(property "Reference" "C30"
 			(at 62.611 92.8835 0)
 			(effects
 				(font
@@ -3561,7 +3751,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "~"
+		(property "Datasheet" "https://jlcpcb.com/api/file/downloadByFileSystemAccessId/8588893255841169408"
 			(at 59.69 96.52 0)
 			(effects
 				(font
@@ -3606,15 +3796,6 @@
 				(hide yes)
 			)
 		)
-		(property "MPN" "HMK325C7475KN-TE"
-			(at 59.69 96.52 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
 		(property "Manufacturer" "Taiyo Yuden"
 			(at 59.69 96.52 0)
 			(effects
@@ -3624,7 +3805,25 @@
 				(hide yes)
 			)
 		)
-		(property "Alternative" "GCM32DC72A475KE02L"
+		(property "Package" ""
+			(at 59.69 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Part" "HMK325C7475KN-TE"
+			(at 59.69 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Part Alternative" "GCM32DC72A475KE02L"
 			(at 59.69 96.52 0)
 			(effects
 				(font
@@ -3642,11 +3841,11 @@
 		(instances
 			(project "pdlc"
 				(path "/1a1907ab-76a9-424d-a737-799a5cd818d3/87035a8b-4549-49bf-94d3-2b5508ef5992"
-					(reference "C20")
+					(reference "C37")
 					(unit 1)
 				)
 				(path "/1a1907ab-76a9-424d-a737-799a5cd818d3/d5bbf22c-3b36-4351-a146-9ed2d187a457"
-					(reference "C31")
+					(reference "C30")
 					(unit 1)
 				)
 			)
@@ -3713,6 +3912,15 @@
 				(hide yes)
 			)
 		)
+		(property "Package" ""
+			(at 100.33 110.49 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "6"
 			(uuid "ca19a8d6-6bb3-439a-a4e4-506b1baa1118")
 		)
@@ -3743,102 +3951,11 @@
 		(instances
 			(project "pdlc"
 				(path "/1a1907ab-76a9-424d-a737-799a5cd818d3/87035a8b-4549-49bf-94d3-2b5508ef5992"
-					(reference "U5")
+					(reference "U7")
 					(unit 1)
 				)
 				(path "/1a1907ab-76a9-424d-a737-799a5cd818d3/d5bbf22c-3b36-4351-a146-9ed2d187a457"
 					(reference "U6")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R")
-		(at 116.84 120.65 180)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "cf488994-7270-4b84-97e8-df5b32cff339")
-		(property "Reference" "R21"
-			(at 118.618 117.0135 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "10K"
-			(at 118.618 119.4378 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
-			(at 118.618 120.65 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 116.84 120.65 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 116.84 120.65 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC" "C25744"
-			(at 116.84 120.65 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Rating" "50V, 1%"
-			(at 118.618 121.8621 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(pin "1"
-			(uuid "29a37024-6270-449f-a6d4-8bd709a00c36")
-		)
-		(pin "2"
-			(uuid "f84a6aac-a0d7-414b-931c-b35d6317ff28")
-		)
-		(instances
-			(project "pdlc"
-				(path "/1a1907ab-76a9-424d-a737-799a5cd818d3/87035a8b-4549-49bf-94d3-2b5508ef5992"
-					(reference "R26")
-					(unit 1)
-				)
-				(path "/1a1907ab-76a9-424d-a737-799a5cd818d3/d5bbf22c-3b36-4351-a146-9ed2d187a457"
-					(reference "R21")
 					(unit 1)
 				)
 			)
@@ -3855,7 +3972,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "f3bbaa6e-ba95-4a88-bd74-e72c68f05a29")
-		(property "Reference" "#PWR024"
+		(property "Reference" "#PWR050"
 			(at 139.7 123.19 0)
 			(effects
 				(font
@@ -3905,11 +4022,11 @@
 		(instances
 			(project "pdlc"
 				(path "/1a1907ab-76a9-424d-a737-799a5cd818d3/87035a8b-4549-49bf-94d3-2b5508ef5992"
-					(reference "#PWR031")
+					(reference "#PWR055")
 					(unit 1)
 				)
 				(path "/1a1907ab-76a9-424d-a737-799a5cd818d3/d5bbf22c-3b36-4351-a146-9ed2d187a457"
-					(reference "#PWR024")
+					(reference "#PWR050")
 					(unit 1)
 				)
 			)
@@ -3925,7 +4042,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "f45e2465-dc4a-4345-a285-74859350522e")
-		(property "Reference" "R3"
+		(property "Reference" "R35"
 			(at 217.678 92.8835 0)
 			(effects
 				(font
@@ -3997,6 +4114,15 @@
 				(justify left)
 			)
 		)
+		(property "Package" ""
+			(at 215.9 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "d3f3fbe7-c440-42e2-bfe5-1202ca570a57")
 		)
@@ -4006,11 +4132,102 @@
 		(instances
 			(project "pdlc"
 				(path "/1a1907ab-76a9-424d-a737-799a5cd818d3/87035a8b-4549-49bf-94d3-2b5508ef5992"
-					(reference "R23")
+					(reference "R41")
 					(unit 1)
 				)
 				(path "/1a1907ab-76a9-424d-a737-799a5cd818d3/d5bbf22c-3b36-4351-a146-9ed2d187a457"
-					(reference "R3")
+					(reference "R35")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 116.84 120.65 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "f9cd25dd-1066-4ae4-8ebd-16d3c485179a")
+		(property "Reference" "R39"
+			(at 118.618 119.4378 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "22K"
+			(at 118.618 121.8621 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
+			(at 115.062 120.65 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 116.84 120.65 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 116.84 120.65 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C25768"
+			(at 116.84 120.65 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Package" ""
+			(at 116.84 120.65 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "a1cf2862-a49f-491d-94c0-829cdfde6e75")
+		)
+		(pin "1"
+			(uuid "62ddf558-1faf-4dac-bf0c-dcbaea63ff8c")
+		)
+		(instances
+			(project "pdlc"
+				(path "/1a1907ab-76a9-424d-a737-799a5cd818d3/87035a8b-4549-49bf-94d3-2b5508ef5992"
+					(reference "R45")
+					(unit 1)
+				)
+				(path "/1a1907ab-76a9-424d-a737-799a5cd818d3/d5bbf22c-3b36-4351-a146-9ed2d187a457"
+					(reference "R39")
 					(unit 1)
 				)
 			)
