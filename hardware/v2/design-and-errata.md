@@ -8,7 +8,7 @@ The driver has the following major components:
 
 - [LM5158](https://www.ti.com/lit/ds/symlink/lm5158.pdf) boost converter produces high voltage DC at 300 mA
 - Two [LMR38010](https://www.ti.com/lit/ds/symlink/lmr38010.pdf) buck converters produce variable voltages between 3 V and 63 V for each AC leg
-- [STM32L151C8T6](https://www.st.com/resource/en/datasheet/stm32l151c8-a.pdf) microcontroller generates waveforms and monitors control signals
+- [STM32L151C8T6](https://www.st.com/resource/en/datasheet/stm32l151c8-a.pdf) microcontroller with 64 KB flash and 32 KB RAM generates waveforms and monitors control signals
 - [ISO1640](https://www.ti.com/lit/ds/symlink/iso1640.pdf) galvanically isolates the external I2C bus when connected to other devices
 - [LP2985-33](http://www.ti.com/lit/ds/symlink/lp2985.pdf) LDO powers the logic circuits at 3.3 V
 - Circuit protection elements
@@ -148,13 +148,13 @@ Operating points:
 
 ### PDLC driver
 
-- GPIO on PB4: HV_EN
-- GPIO on PB5: HV_PG
+- GPIO on PB4: HV_EN, active high
+- GPIO on PB5: HV_PG, active high
 - DAC_OUT1 on PA4: PDLC_ADJ_A, AC waveform generator
 - DAC_OUT2 on PA5: PDLC_ADJ_B, AC waveform generator
-- GPIO on PA8: PDLC_EN
-- GPIO on PC14: PDLC_PG_A
-- GPIO on PC15: PDLC_PG_B
+- GPIO on PA8: PDLC_EN, active high
+- GPIO on PC14: PDLC_PG_A, active high
+- GPIO on PC15: PDLC_PG_B, active high
 
 TIM6 and TIM7 reserved for internal use to initiate DAC DMA requests.
 
@@ -278,9 +278,60 @@ A selection of parts available at at JLCPCB/LCSC (as of January 2026):
 - [LMR38020](https://www.ti.com/lit/ds/symlink/lmr38020.pdf): 80 V, 2 A, synchronous, CC mode (internal compensation), light load efficiency (PFM mode)
   - LMR38020SDDAR: $0.40/1ku, HSOIC-8, 4.9 mm x 3.9 mm
 
+## Test results
+
+Measured at V_in = 12.0 V unless otherwise stated.
+
+| Criterion | Expected | Actual | Result |
+| --------- | -------- | ------ | ------ |
+| LDO voltage | V_3v3 = 3.3 V | V_3v3 = 3.003 V | PASS |
+| UVLO turn on threshold | V_in >= 11.5 V | V_in >= 11.44 V | PASS |
+| UVLO turn off threshold | V_in <= 10.6 V | V_out <= 10.56 V | PASS |
+| Boost voltage | V_hv = 65.7 V | V_hv = 65.65 V | PASS |
+| DAC A center (code 0x800) | V_adj_a = 1.65 V | V_adj_a = 1.651 V | PASS |
+| DAC B center (code 0x800) | V_adj_b = 1.65 V | V_adj_b = 1.657 V | PASS |
+
+Output voltages produced for given DAC codes with no load.
+
+| Code        | V_out_a | V_out_b | I_in    | Remark |
+|  383 (low)  | 62.50 V | 63.00 V | 0.124 A | FAIL, excess input current, theoretically expected 63.01 V |
+|  400        | 62.99 V | 62.78 V | 0.072 A | FAIL, excess input current |
+|  450        | 62.10 V | 62.00 V | 0.065 A | FAIL, excess input current |
+|  480        | 61.57 V | 62.07 V | 0.032 A | OK |
+|  500        | 61.23 V | 61.72 V | 0.032 A | OK |
+|  600        | 59.46 V | 59.94 V | 0.032 A | OK |
+| 1375 (rms)  | 45.87 V | 46.21 V | 0.030 A | OK, theoretically expected 45.43 V |
+| 2076 (mid)  | 33.56 V | 33.79 V | 0.030 A | OK, theoretically expected 33.00 V |
+| 3769 (high) |  3.72 V |  3.73 V | 0.028 A | OK, theoretically expected 2.99 V |
+
+6.8 K resistor from output A/B to ground: OK
+6.8 K resistor from output A at 61 V to output B at 3.5 V: B rises to 48 V, it takes a couple seconds for the voltage to return to 3.5 V when disconnected
+
+https://e2e.ti.com/support/power-management-group/power-management/f/power-management-forum/1362709/lmr38010-holding-output-when-pulled-up-with-negative-current?tisearch=e2e-sitesearch&keymatch=lmr38010#
+
+If the output voltage feedback is too high then the buck just stops issuing pulses until the voltage falls.  It doesn't drive the low-side switch to pull the output down.  That said, I think the  part used in the reference design behaves the same way... so why does the reference design work?  (Or does it even work for real?)
+
+### After replacing with FSPWM variant
+
+12 V supply, output A at 44.6 V, output B at 34.4 V, 10.2 V between A / B
+
+Off: 5 mA at supply
+No load: 224 mA at supply
+Short circuit at the output: output timeout (PGOOD not asserted), no damage
+1 Kohm resistive load (10 mA @ 10.2 V): OK and stable if load added after RUN state, hiccup if load present on startup 
+68 ohm resistive load (150 mA @ 10.2 V): OK and stable if load added after RUN state, hiccup if load present on startup
+48 ohm resistive load (212 mA @ 10.2 V): OK and stable if load added after RUN state, hiccup if load present on startup
+22 ohm resistive load (436 mA @ 10.2 V): always hiccup
+
+Increasing the PDLC output PGOOD timeout does not fix the hiccup on startup if there is any load on the output.
+
 ## Errata
 
 None yet.
+
+Minor nits:
+
+- Noticed that a few vias for signal tracks near the buck converters have a smaller diameter (0.5 mm) than the board setup defaults (0.6 mm).  Still OK to manufacture.  The smaller 0.5 mm diameter is mainly used for ground plane stitching in this board as a way to tell them apart from signals.
 
 ## Updates
 

@@ -1,0 +1,11 @@
+board:
+  name: brownstudios_pdlc
+  full_name: Brown Studios PDLC Driver
+  vendor: brownstudios
+  revision:
+    format: major.minor.patch
+    default: 2.0.0
+    revisions:
+      - name: 2.0.0
+  socs:
+    - name: stm32l151xba

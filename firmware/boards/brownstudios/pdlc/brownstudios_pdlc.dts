@@ -1,0 +1,130 @@
+/dts-v1/;
+#include <st/l1/stm32l151X8-a.dtsi>
+#include <st/l1/stm32l151c(6-8-b)txa-pinctrl.dtsi>
+#include "stm32l151-dac-timers.dtsi"
+
+/ {
+	model = "Brown Studios PDLC Driver";
+	compatible = "brownstudios,pdlc";
+
+	chosen {
+		zephyr,sram = &sram0;
+		zephyr,flash = &flash0;
+		zephyr,console = &usart1;
+	};
+
+	zephyr,user {
+		pdlc-hv-en-gpios = <&gpiob 4 GPIO_ACTIVE_HIGH>;
+		pdlc-hv-pg-gpios = <&gpiob 5 GPIO_ACTIVE_HIGH>;
+
+		pdlc-output-en-gpios = <&gpioa 8 GPIO_ACTIVE_HIGH>;
+		pdlc-output-pg-a-gpios = <&gpioc 14 GPIO_ACTIVE_HIGH>;
+		pdlc-output-pg-b-gpios = <&gpioc 15 GPIO_ACTIVE_HIGH>;
+
+		pdlc-dac = <&dac1>;
+		pdlc-dma = <&dma1>;
+
+		control-mode-gpios = <&gpioa 0 GPIO_ACTIVE_LOW>;
+		control-set-gpios = <&gpioa 1 GPIO_ACTIVE_LOW>;
+		control-en-gpios = <&gpioa 2 GPIO_ACTIVE_LOW>;
+	};
+
+	pwm_set {
+		compatible = "pwm-set";
+
+		status_indicator_red: status_indicator_red {
+			pwms = <&indicator_pwm 1 PWM_USEC(1000) PWM_POLARITY_INVERTED>;
+		};
+		status_indicator_green: status_indicator_green {
+			pwms = <&indicator_pwm 2 PWM_USEC(1000) PWM_POLARITY_INVERTED>;
+		};
+		status_indicator_blue: status_indicator_blue {
+			pwms = <&indicator_pwm 3 PWM_USEC(1000) PWM_POLARITY_INVERTED>;
+		};
+		power_indicator: power_indicator {
+			pwms = <&indicator_pwm 4 PWM_USEC(1000) PWM_POLARITY_INVERTED>;
+		};
+	};
+};
+
+&clk_hsi {
+	status = "okay";
+};
+
+&rcc {
+	clocks = <&clk_hsi>;
+	clock-frequency = <DT_FREQ_M(16)>;
+	ahb-prescaler = <1>;  // AHB clock at 16 MHz for the CPU core
+	apb1-prescaler = <1>; // APB1 clock at 16 MHz for peripherals and timers
+	apb2-prescaler = <1>; // APB2 clock at 16 MHz for peripherals and timers
+};
+
+&usart1 {
+	pinctrl-0 = <&usart1_tx_pa9>, <&usart1_rx_pa10>;
+	pinctrl-names = "default";
+	current-speed = <1000000>;
+	status = "okay";
+};
+
+&iwdg {
+	status = "okay";
+};
+
+&i2c1 {
+	pinctrl-0 = <&i2c1_scl_pb8>, <&i2c1_sda_pb9>;
+	pinctrl-names = "default";
+	clock-frequency = <I2C_BITRATE_STANDARD>;
+	status = "okay";
+};
+
+&i2c2 {
+	pinctrl-0 = <&i2c2_scl_pb10>, <&i2c2_sda_pb11>;
+	pinctrl-names = "default";
+	clock-frequency = <I2C_BITRATE_STANDARD>;
+	status = "okay";
+};
+
+&dac1 {
+	pinctrl-0 = <&dac_out1_pa4>, <&dac_out2_pa5>;
+	pinctrl-names = "default";
+	status = "okay";
+};
+
+&timers3 {
+	// Divide the 16 MHz TIM clock by 1 (0+1) for timing 1000 Hz LED PWM
+	st,prescaler = <0>;
+	status = "okay";
+
+	indicator_pwm: pwm {
+		/* red, green, blue, power */
+		pinctrl-0 = <&tim3_ch1_pa6>, <&tim3_ch2_pa7>, <&tim3_ch3_pb0>, <&tim3_ch4_pb1>;
+		pinctrl-names = "default";
+		status = "okay";
+	};
+};
+
+&timers6 {
+	// Divide the 16 MHz TIM clock by 1 (0+1) for timing 25000 Hz DAC signals
+	st,prescaler = <0>;
+	status = "okay";
+
+	pdlc_wave_timer: counter {
+		status = "okay";
+	};
+};
+
+&timers10 {
+	// Divide the 16 MHz TIM clock by 1 (0+1) for timing 1000 Hz load enable PWM
+	st,prescaler = <0>;
+	status = "okay";
+
+	load_pwm: pwm {
+		pinctrl-0 = <&tim10_ch1_pb12>;
+		pinctrl-names = "default";
+		status = "okay";
+	};
+};
+
+&dma1 {
+	status = "okay";
+};
