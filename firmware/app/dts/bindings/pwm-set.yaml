@@ -1,0 +1,14 @@
+description: |
+  Holds a set of PWM child nodes so they can easily be assigned names.
+  Unline pwm-leds, this binding does not instantiate LED devices.
+
+compatible: "pwm-set"
+
+child-binding:
+  description: PWM child node
+  properties:
+    pwms:
+      required: true
+      type: phandle-array
+      description: |
+        Reference to a PWM instance.

@@ -38,18 +38,20 @@ You can connect an auxiliary load to the PDLC driver and configure it such that 
 
 Also, you can programmatically control the PDLC driver using I2C and adjust many internal settings and use advanced functionality such as dimming.  You'll need to write code for this or use an integration that someone else has made.
 
-The `POWER` indicator illuminates for 1 minute after you supply power to the device then turns off.
+The `POWER` indicator illuminates for 10 seconds after you supply power to the device then turns off.
 
 The `STATUS` indicator color indicates the status of the PDLC driver during normal operation.  The indicator may blink a certain number of times, pause, then repeat to encode information about a problem.  This table explains the significance of the patterns.
 
 | Status color | Pattern    | Meaning |
 | ------------ | ---------- | ------- |
 | GREEN        | steady     | The PDLC driver is providing power to the PDLC film. |
+| YELLOW       | steady     | The PDLC driver is turning on and verifying its operation. |
 | AMBER        | 1 blink    | The PDLC driver was commanded to turn the film on but the output enable control signal is inactive so the driver is not providing power to the PDLC film. |
-| RED          | 1 blinks   | The PDLC high voltage power-good signal is inactive.  May indicate that the power supply is undervoltage or an electrical fault. |
-| RED          | 2 blinks   | The PDLC output A power-good signal is inactive.  May indicate an electrical fault. |
-| RED          | 3 blinks   | The PDLC output B power-good signal is inactive.  May indicate an electrical fault. |
-| RED          | 4 blinks   | The PDLC output B power-good signal is inactive.  May indicate an electrical fault. |
+| RED          | 1 blinks   | HV_TIMEOUT: Boost converter did not report power good within the expected time after being enabled. |
+| RED          | 2 blinks   | HV_FAULT: Boost converter reported power good then subsequently reported not power good. |
+| RED          | 3 blinks   | OUTPUT_TIMEOUT: Buck converter did not report power good within the expected time after being enabled. |
+| RED          | 4 blinks   | OUTPUT_FAULT: Buck converter reported power good then subsequently reported not power good. |
+| RED          | 5 blinks   | DRIVER: An error occurred in the driver. |
 
 Refer to the [setup](#setup) guide for information about how this indicator is used while configuring settings.
 
@@ -58,7 +60,7 @@ Refer to the [setup](#setup) guide for information about how this indicator is u
 When the PDLC film doesn't turn on when you think it should...
 
 - Try turning the film off then on again and look at the `STATUS` indicator for clues.  Perhaps the output is not enabled.
-- Disconnect and reconnect power to the device.  The `POWER` indicator should illuminate momentarily once power is connected.
+- Disconnect and reconnect power to the device.  The `POWER` indicator should illuminate briefly once power is connected.
 - Ensure that your power supply or battery is supplying at least 11.5 V to the device.
 - Check that the settings are compatible with your installation.
 - If under programmatic control, disconnect the external I2C controller, factory reset the settings, and try again using the built-in buttons to confirm basic operation.
@@ -275,6 +277,38 @@ Here's some information about PDLC films that the driver has been tested with.
   - Frequency: 50/60 Hz (manufacturer recommendation)
   - Power: < 5W / m^2 (manufacturer claim)
   - Capacitance: ~12 uF / m^2 (measured)
+
+## How to build the firmware
+
+The firmware is based on Zephyr RTOS v4.3 and compiled with `west`.
+
+1. Install the Zephyr RTOS SDK tools.  You can either follow the [Zephyr Getting Started Guide](https://docs.zephyrproject.org/latest/develop/getting_started/index.html) or install an extension for your IDE, such as [Zephyr IDE](https://zephyr-ide.mylonics.com/) or [Workbench for Zephyr](https://z-workbench.com/), that can install the tools for you.
+
+2. Install the [xPack OpenOCD](https://xpack-dev-tools.github.io/openocd-xpack/docs/install/) package for your OS and add it to your system `PATH`.  This step is needed because the version of OpenOCD that is distributed with Zephyr is too old.  We need OpenOCD v0.12.0-7 at minimum.
+
+3. Get the code and its dependencies.  This is a little more complicated than simply cloning this git repository because the Zephyr `west` multi-tool assumes that all of the code resides within a top directory called a workspace.  You will need to create an empty directory to be the workspace first.  Here's how to do it from the command-line and the same thing can be done with IDE extensions.
+
+```sh
+$ mkdir pdlc-workspace
+$ cd pdlc-workspace
+$ west init -m https://github.com/brown-studios/pdlc
+$ west update
+```
+
+4. Build and the firmware (either release or debug).
+
+```sh
+$ cd pdlc/firmware/app
+$ west build -p -d build/release
+$ west build -p -d build/debug -- -DFEATURE_LOG=y -DFEATURE_DEBUG=y
+```
+
+5. Connect an ST-Link v3 programmer to the `DEBUG` port with an `STDC14` cable.  Flash the firmware.
+
+```sh
+$ cd pdlc/firmware/app
+$ west flash
+```
 
 ## Design history
 

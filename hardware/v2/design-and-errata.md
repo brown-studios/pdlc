@@ -1,6 +1,8 @@
 # PDLC driver v2
 
-**Status: Ready for fabrication, not yet tested**
+**Status: v2.0 fabricated and tested, not recommended for production, see errata**
+
+**Status: v2.1 update pending with optimized part selection**
 
 ## Design synopsis
 
@@ -8,7 +10,7 @@ The driver has the following major components:
 
 - [LM5158](https://www.ti.com/lit/ds/symlink/lm5158.pdf) boost converter produces high voltage DC at 300 mA
 - Two [LMR38010](https://www.ti.com/lit/ds/symlink/lmr38010.pdf) buck converters produce variable voltages between 3 V and 63 V for each AC leg
-- [STM32L151C8T6](https://www.st.com/resource/en/datasheet/stm32l151c8-a.pdf) microcontroller generates waveforms and monitors control signals
+- [STM32L151C8T6](https://www.st.com/resource/en/datasheet/stm32l151c8-a.pdf) microcontroller with 64 KB flash and 32 KB RAM generates waveforms and monitors control signals
 - [ISO1640](https://www.ti.com/lit/ds/symlink/iso1640.pdf) galvanically isolates the external I2C bus when connected to other devices
 - [LP2985-33](http://www.ti.com/lit/ds/symlink/lp2985.pdf) LDO powers the logic circuits at 3.3 V
 - Circuit protection elements
@@ -87,6 +89,7 @@ The two variable voltage buck converters modulate the high voltage DC to produce
 - The LMR38010 data sheet recommends setting Iout_max to the full device current rating (1 A) during design when the actual load current (300 mA) is much smaller.  Note that choosing a larger Iout_max results in a design with smaller inductors.
 - The buck converters may be damaged if the switching node drops below 0 V so we choose Vout_low = 3 V and Vout_high = 63 V to allow a safety margin for generating a 60Vp-p waveform between a pair of buck converters supplied with Vin = 65.7.
 - To avoid oversizing the device, we follow the guidance of SDAA033 and set the Vout design operating point to the RMS voltage.  So Vout = (Vout_high - Vout_low) / sqrt(2) + Vout_low = 45.4 V.
+- The selected buck converter must operate in FPWM mode because PFM mode cannot sink current from the output.
 
 This circuit was initially modeled in TI WebBench with the following parameters:
 
@@ -148,13 +151,13 @@ Operating points:
 
 ### PDLC driver
 
-- GPIO on PB4: HV_EN
-- GPIO on PB5: HV_PG
+- GPIO on PB4: HV_EN, active high
+- GPIO on PB5: HV_PG, active high
 - DAC_OUT1 on PA4: PDLC_ADJ_A, AC waveform generator
 - DAC_OUT2 on PA5: PDLC_ADJ_B, AC waveform generator
-- GPIO on PA8: PDLC_EN
-- GPIO on PC14: PDLC_PG_A
-- GPIO on PC15: PDLC_PG_B
+- GPIO on PA8: PDLC_EN, active high
+- GPIO on PC14: PDLC_PG_A, active high
+- GPIO on PC15: PDLC_PG_B, active high
 
 TIM6 and TIM7 reserved for internal use to initiate DAC DMA requests.
 
@@ -252,6 +255,7 @@ Notable qualities:
 - Synchronous rectification improves efficiency and low voltage output operation.
 - The control mode influences component selection.  Constant on-time (COT) and pulse frequency modulation (PFM) mode require a minimum output ripple and additional components may be needed to generate that ripple in the feedback network.  Current control mode (CC) requires requires tuning a compensation network (unless internally integrated).  Pulse frequency mode (PFM) 
 - The configurable soft start input of some devices may potentially be used to adjust the internal voltage reference and thereby modulate the output voltage target instead of injecting a signal into the feedback network.
+- In the v2 design, a PFM part was selected for light load efficiency but it is unable to sink current from the output so it does not suit this application, so v2.1 uses an FPWM part.
 
 A selection of parts available at at JLCPCB/LCSC (as of January 2026):
 
@@ -274,15 +278,86 @@ A selection of parts available at at JLCPCB/LCSC (as of January 2026):
   - LM5574: $0.85/1ku, TSSOP-16, 5.0 mm x 6.4 mm
 - LM5575: 75 V, 1.5 A, similar to LM5574
 - [LMR38010](https://www.ti.com/lit/ds/symlink/lmr38010.pdf): 80 V, 1 A, synchronous, CC mode (internal compensation), light load efficiency (PFM mode)
-  - LMR38010SDDAR: $0.59/1ku, HSOIC-8, 4.9 mm x 3.9 mm
+  - LMR38010SDDAR: $0.59/1ku, HSOIC-8, 4.9 mm x 3.9 mm (PFM)
+  - LMR38010FSDDAR: $2.00/1ku, HSOIC-8, 4.9 mm x 3.9 mm (FPWM with spread spectrum)
 - [LMR38020](https://www.ti.com/lit/ds/symlink/lmr38020.pdf): 80 V, 2 A, synchronous, CC mode (internal compensation), light load efficiency (PFM mode)
   - LMR38020SDDAR: $0.40/1ku, HSOIC-8, 4.9 mm x 3.9 mm
 
+## Test results
+
+### Initial tests with v2.0
+
+Measured at V_in = 12.0 V unless otherwise stated.
+
+| Criterion | Expected | Actual | Result |
+| --------- | -------- | ------ | ------ |
+| LDO voltage | V_3v3 = 3.3 V | V_3v3 = 3.003 V | PASS |
+| UVLO turn on threshold | V_in >= 11.5 V | V_in >= 11.44 V | PASS |
+| UVLO turn off threshold | V_in <= 10.6 V | V_out <= 10.56 V | PASS |
+| Boost voltage | V_hv = 65.7 V | V_hv = 65.65 V | PASS |
+| DAC A center (code 0x800) | V_adj_a = 1.65 V | V_adj_a = 1.651 V | PASS |
+| DAC B center (code 0x800) | V_adj_b = 1.65 V | V_adj_b = 1.657 V | PASS |
+
+Output voltages produced for given DAC codes with no load.
+
+| Code        | V_out_a | V_out_b | I_in    | Remark |
+|  383 (low)  | 62.50 V | 63.00 V | 0.124 A | FAIL, excess input current, theoretically expected 63.01 V |
+|  400        | 62.99 V | 62.78 V | 0.072 A | FAIL, excess input current |
+|  450        | 62.10 V | 62.00 V | 0.065 A | FAIL, excess input current |
+|  480        | 61.57 V | 62.07 V | 0.032 A | OK |
+|  500        | 61.23 V | 61.72 V | 0.032 A | OK |
+|  600        | 59.46 V | 59.94 V | 0.032 A | OK |
+| 1375 (rms)  | 45.87 V | 46.21 V | 0.030 A | OK, theoretically expected 45.43 V |
+| 2076 (mid)  | 33.56 V | 33.79 V | 0.030 A | OK, theoretically expected 33.00 V |
+| 3769 (high) |  3.72 V |  3.73 V | 0.028 A | OK, theoretically expected 2.99 V |
+
+When a small load (6.8 K resistor) is connected between the outputs at different voltages, the output voltage rises above the setpoint expected by the feedback loop.  The [buck converter does not sink current from the output in PFM mode](https://e2e.ti.com/support/power-management-group/power-management/f/power-management-forum/1362709/lmr38010-holding-output-when-pulled-up-with-negative-current) so it cannot work in this application!
+
+On closer examination, [SDAA033 shows the buck converter operating in PFM mode on one page and in FPWM on a different page](https://e2e.ti.com/support/power-management-group/power-management/f/power-management-forum/1615264/lmr38010-pdlc-film-driver-based-on-sdaa0033/6227563).
+
+### Tests with v2.0 after replacing LMR38010SDDAR (PFM) with LMR38010FSDDAR (FPWM)
+
+The FPWM buck converter sinks current as expected.  Driving the DAC with a sine wave yields a nice sinusoidal output that is capable of driving PDLC panels.  Larger panels not yet tested.
+
+Current usage on 12 VDC supply:
+
+- Off: 5 mA
+- No load: 215 mA!
+- 0.16 m^2 PDLC panel: 210 mA
+
+The output stage is inefficient.  The buck converter dumps about 2 W into the output inductors constantly even with no load on the output.  The inductors get somewhat hot to the touch after a few minutes (temperature change not yet measured).
+
+The PDLC panel transitions from diffuse to clear as expected but it does not achieve maximum clarity at the driven output voltage.  With the feedback configured for 3 VDC to 60 VDC peak-to-peak, the resulting output is 40 VAC RMS at 100 Hz.  The PDLC panel becomes noticeably clearer when the output voltage is raised to about 60 VAC RMS at 60 Hz (using other equipment) and becomes marginally clearer up to about 80 VAC RMS at 60 Hz.  So it would be worthwhile to increase the output voltage or experiment with changing the output waveform.
+
+Tested short-circuit protection on the output.  Hiccups, as expected, with no damage.
+
+Tested operation at different output frequencies with a 0.16 m^2 PDLC panel.  It seems like the outputs fall out of regulation at higher frequencies.
+
+| Frequency | Behavior |
+| --------- | -------- |
+| 20 Hz | Visible strobing |
+| 50 Hz | Slight flicker |
+| 100 Hz | OK |
+| 120 Hz | OK |
+| 150 Hz | Buck reports not PGOOD above about 130 Hz |
+
 ## Errata
 
-None yet.
+### v2.0 errata
+
+Major issues:
+
+- The LMR38010SDDAR buck converter operates in PFM mode and cannot sink current from the output so it does not work for this application.  Replacing it with LMR38010FSDDAR in FPWM mode works but the output stage consumes 2 W constantly even with no load on the output, raising the temperature of the inductors.
+
+Minor nits:
+
+- Noticed that a few vias for signal tracks near the buck converters have a smaller diameter (0.5 mm) than the board setup defaults (0.6 mm).  Still OK to manufacture.  The smaller 0.5 mm diameter is mainly used for ground plane stitching in this board as a way to tell them apart from signals.
 
 ## Updates
+
+### Major changes since v2.0
+
+- Replace LMR38010SDDAR with LMR38010FSDDAR for testing
 
 ### Major changes since v1
 
